@@ -1,0 +1,19 @@
+---
+# tasks file for ansible-role-is-ubuntu
+- name: "Include role variables"
+  include_vars: "main.yml"
+
+- name: "Gather facts"
+  setup:    # equivalent to "gather_facts: yes"
+
+- name: "Set is_ubuntu_localhost fact"
+  set_fact:
+    is_ubuntu_localhost: "{{ True if ansible_connection == 'local' else False }}"
+
+- name: "Check whether inside a container or not"
+  raw: "cat /proc/1/sched | head -n1 | egrep -o '^(init|systemd) \\(1, ' | awk '{print $1}'"
+  register: check_proc_on
+
+- name: "Set is_ubuntu_inside_container fact"
+  set_fact:
+    is_ubuntu_inside_container: "{{ False if check_proc_one is defined and check_proc_one.stdout is defined and check_proc_one.stdout | length else True }}"
