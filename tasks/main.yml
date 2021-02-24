@@ -12,7 +12,7 @@
 
 - name: "Check whether inside a container or not"
   raw: "cat /proc/1/sched | head -n1 | egrep -o '^(init|systemd) \\(1, ' | awk '{print $1}'"
-  register: check_proc_on
+  register: check_proc_one
 
 - name: "Set is_ubuntu_inside_container fact"
   set_fact:
