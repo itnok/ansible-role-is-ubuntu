@@ -16,4 +16,4 @@
 
 - name: "Set is_ubuntu_inside_container fact"
   set_fact:
-    is_ubuntu_inside_container: "{{ False if check_proc_one is defined and check_proc_one.stdout is defined and check_proc_one.stdout | length else True }}"
+    is_ubuntu_inside_container: "{{ False if check_proc_one is defined and check_proc_one.stdout is defined and (check_proc_one.stdout | length) else True }}"
