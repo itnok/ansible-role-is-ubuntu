@@ -1,5 +1,6 @@
 galaxy_info:
   role_name: is_ubuntu
+  namespace: itnok
   author: Simone Conti - @itnok
   description: Detects whether the target Ubuntu host is... a container or eventually localhost.
   company: itnok.com
@@ -37,8 +38,8 @@ galaxy_info:
   platforms:
     - name: Ubuntu
       versions:
-      - bionic
-      - focal
+        - bionic
+        - focal
 
   galaxy_tags:
     # Maximum 20 tags per role.
