@@ -1,0 +1,24 @@
+---
+dependency:
+  name: galaxy
+  enabled: False
+driver:
+  name: docker
+lint: |
+  yamllint .
+  ansible-lint
+platforms:
+  - name: vas-ubuntu-bionic
+    image: ${MOLECULE_DISTRO:-'ubuntu:bionic'}
+    pre_build_image: False
+  - name: vas-ubuntu-focal
+    image: ${MOLECULE_DISTRO:-'ubuntu:focal'}
+    pre_build_image: False
+provisioner:
+  name: ansible
+  inventory:
+    group_vars:
+      all:
+        ansible_python_interpreter: "/usr/bin/python3"
+verifier:
+  name: ansible

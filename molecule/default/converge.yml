@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include this role"
+      include_role:
+        name: "ansible-role-is-ubuntu"
