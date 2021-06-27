@@ -14,6 +14,9 @@ platforms:
   - name: vas-ubuntu-focal
     image: ${MOLECULE_DISTRO:-'ubuntu:focal'}
     pre_build_image: False
+  - name: vas-debian-buster
+    image: ${MOLECULE_DISTRO:-'debian:buster'}
+    pre_build_image: False
 provisioner:
   name: ansible
   inventory:

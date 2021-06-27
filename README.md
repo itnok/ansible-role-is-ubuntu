@@ -1,7 +1,7 @@
 is-ubuntu
 =========
 
-[![Build Status](https://travis-ci.org/itnok/ansible-role-is-ubuntu.svg?branch=master)](https://travis-ci.org/itnok/ansible-role-is-ubuntu) [![GitHub tag](https://img.shields.io/github/v/tag/itnok/ansible-role-is-ubuntu?sort=semver)](https://github.com/itnok/ansible-role-is-ubuntu/tags/) [![Ansible Role](https://img.shields.io/ansible/role/52993)](https://galaxy.ansible.com/itnok/is_ubuntu)
+[![Build Status](https://github.com/itnok/ansible-role-is-ubuntu/workflows/CI/badge.svg)](https://github.com/itnok/ansible-role-is-ubuntu/actions/workflows/main.yml) [![GitHub tag](https://img.shields.io/github/v/tag/itnok/ansible-role-is-ubuntu?sort=semver)](https://github.com/itnok/ansible-role-is-ubuntu/tags/) [![Ansible Role](https://img.shields.io/ansible/role/52993)](https://galaxy.ansible.com/itnok/is_ubuntu)
 
 Detects whether the target Ubuntu host is... a container or eventually localhost.
 

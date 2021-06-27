@@ -2,7 +2,7 @@ galaxy_info:
   role_name: is_ubuntu
   namespace: itnok
   author: Simone Conti - @itnok
-  description: Detects whether the target Ubuntu host is... a container or eventually localhost.
+  description: Detects whether the target Ubuntu host is... a container or eventually localhost (and more).
   company: itnok.com
 
   # If the issue tracker for your role is not on github, uncomment the
@@ -40,15 +40,20 @@ galaxy_info:
       versions:
         - bionic
         - focal
+    - name: Debian
+      versions:
+        - buster
 
   galaxy_tags:
     # Maximum 20 tags per role.
     - ubuntu
+    - debian
     - facts
     - container
     - docker
     - localhost
     - detect
+    - proxy
 
 dependencies: []
   # List your role dependencies here, one per line. Be sure to remove the '[]' above,

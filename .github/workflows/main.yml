@@ -1,0 +1,52 @@
+# This is a GitHub Actions Workflow for Build & Release
+
+name: CI
+
+# Controls when the action will run.
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches:
+      - "master"
+    tags:
+      - "**"
+
+  pull_request:
+    branches:
+      - "master"
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains two jobs called "test" and "release"
+  test:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@v2
+        with:
+          path: "${{ github.repository }}"
+          submodules: recursive
+          lfs: true
+      - name: "Run all Ansible Molecule tests"
+        uses: robertdebock/molecule-action@2.6.17
+        with:
+          command: test
+  release:
+    needs:
+      - test
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    if: github.event.pull_request.merged == 'true' || github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')
+    steps:
+      - name: galaxy
+        uses: robertdebock/galaxy-action@1.1.0
+        with:
+          galaxy_api_key: "${{ secrets.ANSIBLE_GALAXY_API_KEY }}"
