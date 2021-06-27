@@ -10,6 +10,7 @@ Steps performed are:
   - Set is_ubuntu_localhost fact
   - Check whether inside a container or not
   - Set is_ubuntu_inside_container fact
+  - Check whether proxy settings are present or not
 
 
 ## :exclamation: Requirements

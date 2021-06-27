@@ -28,3 +28,12 @@
       else True }}"
   when: is_ubuntu_inside_container is not defined or is_force_lookup
 
+- name: "Check whether proxy settings are present or not"
+  set_fact:
+    is_ubuntu_behind_proxy: "{{ True if \
+      lookup('env', 'http_proxy') != '' or \
+      lookup('env', 'https_proxy') != '' or \
+      lookup('env', 'HTTP_PROXY') != '' or \
+      lookup('env', 'HTTPS_PROXY') != '' \
+      else False }}"
+  when: is_ubuntu_behind_proxy is not defined or is_force_lookup
