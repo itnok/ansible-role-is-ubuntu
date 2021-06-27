@@ -21,7 +21,9 @@ None.
 ## :abcd: Role Variables
 ------------------------
 
-None.
+| Variable          | Description                                                                                                   | Default Value |
+|-------------------|---------------------------------------------------------------------------------------------------------------|---------------|
+| `is_force_lookup` | Lookup of custom additional facts does not happen if they already exist. This is it force looking up for them | `no`          |
 
 
 ## :link: Dependencies

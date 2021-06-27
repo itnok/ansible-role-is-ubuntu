@@ -1,2 +1,3 @@
 ---
 # vars file for ansible-role-is-ubuntu
+is_force_lookup: no
