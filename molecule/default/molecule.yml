@@ -5,16 +5,17 @@ dependency:
 driver:
   name: docker
 lint: |
+  set -e
   yamllint .
   ansible-lint
 platforms:
-  - name: vas-ubuntu-bionic
+  - name: itnok-ubuntu-bionic
     image: ${MOLECULE_DISTRO:-'ubuntu:bionic'}
     pre_build_image: False
-  - name: vas-ubuntu-focal
+  - name: itnok-ubuntu-focal
     image: ${MOLECULE_DISTRO:-'ubuntu:focal'}
     pre_build_image: False
-  - name: vas-debian-buster
+  - name: itnok-debian-buster
     image: ${MOLECULE_DISTRO:-'debian:buster'}
     pre_build_image: False
 provisioner:

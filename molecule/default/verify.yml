@@ -5,6 +5,18 @@
   hosts: all
   gather_facts: false
   tasks:
-  - name: Example assertion
+  - name: Include Role main task
+    include_role:
+      name: itnok.is_ubuntu
+
+  - name: Verify is_ubuntu_localhost is False in Molecule container
     assert:
-      that: true
+      that: not is_ubuntu_localhost
+
+  - name: Verify is_ubuntu_inside_container is True in Molecule container
+    assert:
+      that: is_ubuntu_inside_container
+
+  - name: Verify is_ubuntu_behind_proxy is False in Molecule container
+    assert:
+      that: not is_ubuntu_behind_proxy
