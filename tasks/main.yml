@@ -37,3 +37,88 @@
       lookup('env', 'HTTPS_PROXY') != '' \
       else False }}"
   when: is_ubuntu_behind_proxy is not defined or is_force_lookup
+
+#
+# From this point on all facts are set every time the Role is executed
+# even if the facts are already present or 'is_force_lookup' ir False.
+#
+- name: "Create list of url to check for reachability"
+  block:
+    - name: "Read remote APT 'sources.list' file"
+      slurp:
+        src: "/etc/apt/sources.list"
+      register: _apt_sources_list
+
+    # This is necessary and we cannot use/reuse 'is_test_url_list'
+    # because Role variables having same name of facts have
+    # priority over them.
+    - name: "Create fact to build temporary list of URLs"
+      set_fact:
+        _is_test_url_list: "{{ is_test_url_list | unique }}"
+
+    - name: "Create list of url to check"
+      set_fact:
+        _is_test_url_list: "{{ (_is_test_url_list + [url_item]) | unique }}"
+      loop: "{{ \
+        _apt_sources_list['content'] | \
+        b64decode | \
+        regex_findall('^deb.*http[^ ]*', multiline=True) | \
+        unique | \
+        map('regex_replace', '^deb.*http', 'http') | list \
+        }}"
+      loop_control:
+        loop_var: url_item
+
+- name: "Check all URLs are reachable"
+  block:
+    - name: "Prepare empty facts for list of reachable/unreachable URLs"
+      set_fact:
+        is_ubuntu_url_reachable_list: []
+        is_ubuntu_url_unreachable_list: []
+
+    - name: "Try to connect to the list of {{ _is_test_url_list | length }} URLs to check"
+      uri:
+        url: "{{ url_item }}"
+        timeout: 10
+        return_content: yes
+      with_items: "{{ _is_test_url_list }}"
+      loop_control:
+        loop_var: url_item
+      register: _result
+      changed_when: no
+      check_mode: no
+      failed_when: no
+
+    - name: "Create list of reachable URLs"
+      set_fact:
+        is_ubuntu_url_reachable_list: "{{ \
+          (is_ubuntu_url_reachable_list + [result_item.url]) | unique \
+          }}"
+      with_items: "{{ _result.results }}"
+      loop_control:
+        loop_var: result_item
+      when:
+        - result_item.status is defined
+        - result_item.status == 200
+
+    - name: "Create list of unreachable URLs"
+      set_fact:
+        is_ubuntu_url_unreachable_list: "{{ \
+          (is_ubuntu_url_unreachable_list + [result_item.url]) | unique \
+          }}"
+      with_items: "{{ _result.results }}"
+      loop_control:
+        loop_var: result_item
+      when:
+        - result_item.status is defined
+        - result_item.status != 200
+
+    # Here we could just check whether 'is_ubuntu_url_unreachable_list' was empty or not
+    # BUT for testing purposes the use of a different approach is intentional
+    - name: "Set is_ubuntu_network_reachable fact (based on {{ _is_test_url_list | length }} URLs checked)"
+      set_fact:
+        is_ubuntu_network_reachable: "{{ \
+          True \
+          if (_result.results | map(attribute='status') | unique | string) == '[200]' \
+          else False \
+          }}"
